@@ -22,9 +22,9 @@ if st.button("Calculate New ELO Ratings"):
         k = 64
         delta_a = k * (s_a - expected_a)
         delta_b = k * (s_b - expected_b)
-        if games_a > games_b:
+        if games_a > games_b and delta_a < 0:
             delta_a = 0
-        if games_b > games_a:
+        if games_b > games_a and delta_b < 0:
             delta_b = 0
 
         new_elo_a = max(1000, round(elo_a + delta_a))

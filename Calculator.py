@@ -20,12 +20,16 @@ if st.button("Calculate New ELO Ratings"):
         expected_a = 1 / (1 + 10 ** ((elo_b - elo_a) / 400))
         expected_b = 1 / (1 + 10 ** ((elo_a - elo_b) / 400))
         k = 64
+
+        elo_gap = abs(elo_a - elo_b)
+        floor_gain = max(1,10-elo_gap//100)
+
         delta_a = k * (s_a - expected_a)
         delta_b = k * (s_b - expected_b)
-        if games_a > games_b and delta_a < 0:
-            delta_a = 0
-        if games_b > games_a and delta_b < 0:
-            delta_b = 0
+        if games_a > games_b and delta_a < floor_gain:
+            delta_a = floor_gain
+        if games_b > games_a and delta_b < floor_gain:
+            delta_b = floor_gain
 
         new_elo_a = max(1000, round(elo_a + delta_a))
         new_elo_b = max(1000, round(elo_b + delta_b))

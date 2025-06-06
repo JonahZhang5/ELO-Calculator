@@ -20,12 +20,16 @@ if st.button("Calculate New ELO Ratings"):
         expected_a = 1 / (1 + 10 ** ((elo_b - elo_a) / 400))
         expected_b = 1 / (1 + 10 ** ((elo_a - elo_b) / 400))
         k = 64
-        new_elo_a = max(1000, round(elo_a + k * (s_a - expected_a)))
-        new_elo_b = max(1000, round(elo_b + k * (s_b - expected_b)))
-        if games_a>games_b and elo_a < new_elo_a:
-            new_elo_a = elo_a
-        if games_b>games_a and elo_b < new_elo_b:
-            new_elo_b = elo_b
+        delta_a = k * (s_a - expected_a)
+        delta_b = k * (s_b - expected_b)
+        if games_a > games_b:
+            delta_a = 0
+        if games_b > games_a:
+            delta_b = 0
+
+        new_elo_a = max(1000, round(elo_a + delta_a))
+        new_elo_b = max(1000, round(elo_b + delta_b))
+
 
         st.success(f"🏆 Player A's new ELO: **{new_elo_a}**")
         st.success(f"🎮 Player B's new ELO: **{new_elo_b}**")
